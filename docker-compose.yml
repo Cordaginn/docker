@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  myapp:
+    build: ./ 
+    ports:
+      - 3000:4000
+    depends_on:
+      - db
+    links:
+      - db 
+    networks:
+      - back-end
+    environment:
+      - PORT=4000
+  front:
+    build: ./front
+    ports:
+      - 4000:3000
+    depends_on:
+      - myapp
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: "main"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "12345678"
+    networks:
+      - back-end
+networks:
+  back-end:
