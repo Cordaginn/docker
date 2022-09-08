@@ -4,21 +4,27 @@ services:
   myapp:
     build: ./ 
     ports:
-      - 3000:4000
+      - 3000:3000
     depends_on:
       - db
-    links:
-      - db 
     networks:
-      - back-end
+      back-end:
+        aliases:
+          - myapp
     environment:
-      - PORT=4000
+      - PORT=3000
   front:
     build: ./front
     ports:
       - 4000:3000
     depends_on:
       - myapp
+    networks:
+      back-end:
+        aliases:
+          - front
+    environment:
+      - REACT_APP_BACKEND=localhost:3000
   db:
     image: postgres:latest
     restart: unless-stopped
@@ -29,6 +35,8 @@ services:
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "12345678"
     networks:
-      - back-end
+      back-end:
+        aliases:
+          - db
 networks:
   back-end:

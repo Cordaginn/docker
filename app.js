@@ -3,6 +3,8 @@ let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
+const cors = require('cors');
+const parser = require('body-parser');
 
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
@@ -12,6 +14,9 @@ let app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+app.use(parser.json())
+app.use(cors())
 
 app.use(logger('dev'));
 app.use(express.json());

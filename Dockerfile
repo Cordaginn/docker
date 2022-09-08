@@ -1,8 +1,7 @@
 FROM node:latest
-RUN mkdir /home/node/project
 WORKDIR /home/node/project
-COPY . .
+COPY package.json .
 RUN npm install
-EXPOSE 3000
+COPY . .
 ENTRYPOINT [ "npm" ]
 CMD [ "start" ]
